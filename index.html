@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light dark" />
+  <title>我的相处模型｜行为型自我探索</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="app">
+    <div class="topbar">
+      <div class="brand"><div class="logo">我</div><span>我的相处模型</span></div>
+      <div class="privacy-pill">🔒 答案仅保存在当前浏览器</div>
+    </div>
+
+    <section id="home" class="card hero">
+      <div class="hero-grid">
+        <div>
+          <div class="eyebrow">Behavior-based self reflection</div>
+          <h1>不贴标签，<br>从具体行为认识自己。</h1>
+          <p class="lead">从 100 道不重复的日常情境题库中自适应出题，观察你在承诺、反馈、沟通、互惠、公共责任和边界中的稳定倾向。回答越一致的板块越早停止，矛盾较多的板块会自动追加题目。</p>
+          <div class="feature-list">
+            <div class="feature"><span class="dot">1</span><div><b>只问可观察行为</b><br>尽量避免“你是不是某种人”的空泛判断。</div></div>
+            <div class="feature"><span class="dot">2</span><div><b>展示强项与风险</b><br>同一种倾向在不同场景里可能既有优势，也有代价。</div></div>
+            <div class="feature"><span class="dot">3</span><div><b>按置信度停止追问</b><br>每个维度独立判断；已经足够稳定的板块不再重复出题。</div></div>
+          </div>
+        </div>
+        <div class="start-panel">
+          <label for="nickname">名字或昵称（可选）</label>
+          <input id="nickname" type="text" maxlength="24" placeholder="例如：小黄 / 匿名" autocomplete="off" />
+          <div class="mode-title">选择题目深度</div>
+          <div class="mode-grid">
+            <label class="mode-card" data-mode="quick"><input type="radio" name="quizMode" value="quick"><span class="mode-card-inner"><span><strong>精简自适应</strong><br>快速形成轮廓</span><i class="mode-check"></i></span></label>
+            <label class="mode-card active" data-mode="standard"><input type="radio" name="quizMode" value="standard" checked><span class="mode-card-inner"><span><strong>标准自适应</strong><br>速度与稳定性平衡</span><i class="mode-check"></i></span></label>
+            <label class="mode-card" data-mode="deep"><input type="radio" name="quizMode" value="deep"><span class="mode-card-inner"><span><strong>深入自适应</strong><br>更多情境与交叉验证</span><i class="mode-check"></i></span></label>
+          </div>
+          <button id="startBtn" class="btn btn-primary wide">开始自适应答题</button>
+          <p id="modeEstimate" class="smallprint">通常约 28–56 题。速度与稳定性平衡，推荐大多数人使用。</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="quiz" class="quiz-shell hidden" aria-live="polite">
+      <aside class="card sidebar">
+        <div class="progress-ring">
+          <svg viewBox="0 0 120 120" aria-hidden="true">
+            <circle cx="60" cy="60" r="52" fill="none" stroke="var(--line)" stroke-width="9" />
+            <circle id="progressCircle" cx="60" cy="60" r="52" fill="none" stroke="var(--primary)" stroke-linecap="round" stroke-width="9" stroke-dasharray="326.73" stroke-dashoffset="326.73" />
+          </svg>
+          <div class="num"><span id="progressNum">0%</span><small>综合进度</small></div>
+        </div>
+        <div>
+          <b>七个观察维度</b>
+          <div class="dimension-mini" id="dimensionMini"></div>
+          <p id="adaptiveNote" class="adaptive-note">准备开始</p>
+        </div>
+      </aside>
+
+      <section class="card question-card">
+        <div class="q-meta"><span id="qIndex">第 1 题</span><span id="qDimension" class="q-dim"></span></div>
+        <h2 id="questionText" class="question"></h2>
+        <p id="questionHint" class="hint"></p>
+        <div class="options" id="options"></div>
+        <div class="quiz-actions">
+          <button id="prevBtn" class="btn btn-secondary">上一题</button>
+          <button id="nextBtn" class="btn btn-primary">下一题</button>
+        </div>
+      </section>
+    </section>
+
+    <section id="results" class="results hidden">
+      <section class="card result-hero">
+        <div class="result-head">
+          <div>
+            <div class="eyebrow">Your interaction model</div>
+            <h2 id="resultTitle">你的相处模型</h2>
+            <p id="resultIntro"></p>
+          </div>
+          <div class="action-row">
+            <button id="exportBtn" class="btn btn-primary">导出 Markdown</button>
+            <button id="copyBtn" class="btn btn-secondary">复制摘要</button>
+            <button id="restartBtn" class="btn btn-ghost">重新测试</button>
+          </div>
+        </div>
+      </section>
+
+      <div class="result-grid">
+        <section class="card chart-card">
+          <div class="chart-wrap"><svg id="radar" viewBox="0 0 600 600" role="img" aria-label="七维相处模型雷达图"></svg></div>
+          <p id="legendNote" class="legend-note">雷达图展示倾向分数；置信度会单独显示，不代表心理测量意义上的诊断准确率。</p>
+        </section>
+        <section class="card summary-card">
+          <h3 class="summary-title" id="summaryTitle"></h3>
+          <div class="summary-copy" id="summaryCopy"></div>
+          <div class="tag-row" id="tagRow"></div>
+          <div class="scores" id="scores"></div>
+        </section>
+      </div>
+
+      <section class="card detail-card">
+        <h3 style="margin-top:0">逐维度解释</h3>
+        <div class="detail-grid" id="detailGrid"></div>
+      </section>
+
+      <section class="card disclaimer">
+        <b>使用边界：</b>这个结果只适合帮助本人反思，不建议拿来审判、羞辱或给他人下定论。一次答题会受到情绪、近期事件和自我呈现倾向影响；更可靠的做法是结合真实事件、他人反馈和后续变化持续修正。
+      </section>
+    </section>
+
+    <div class="footer">基于行为证据的自我探索工具 · 无服务器 · 不上传答案</div>
+  </main>
+  <div class="toast" id="toast"></div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
